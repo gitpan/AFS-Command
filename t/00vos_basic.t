@@ -1,5 +1,5 @@
 #
-# $Id: 00vos_basic.t,v 4.2 2003/11/05 22:42:49 wpm Exp $
+# $Id: 00vos_basic.t,v 5.3 2003/11/13 21:07:25 wpm Exp $
 #
 # (c) 2003 Morgan Stanley and Co.
 # See ..../src/LICENSE for terms of distribution.
@@ -26,6 +26,8 @@ BEGIN {
     $| = 1;
     if ( $AFS::Command::Tests::Config{AFS_COMMAND_DISABLE_TESTS} =~ /\bvos\b/ ) {
 	$TestTotal = 0;
+    } elsif ( $AFS::Command::Tests::Config{AFS_COMMAND_CELLNAME} eq 'your.cell.name' ) {
+	$TestTotal = 0;
     } else {
 	$TestTotal = 75;
     }
@@ -33,7 +35,7 @@ BEGIN {
 }
 
 END {print "not ok 1\n" unless $Loaded;}
-use AFS::Command::VOS 1.3;
+use AFS::Command::VOS 1.4;
 $Loaded = 1;
 $TestCounter = 1;
 print "ok $TestCounter\n";
@@ -288,7 +290,7 @@ if ( ref $result && $result->isa("AFS::Object::Volume") ) {
 
 	#
 	# Finally, maxauota must be numeric, and status should be
-	# 'On-line'
+	# 'online'
 	#
 	if ( $header->maxquota() =~ /^\d+$/ ) {
 	    print "ok $TestCounter\n";
@@ -300,11 +302,11 @@ if ( ref $result && $result->isa("AFS::Object::Volume") ) {
 	}
 	$TestCounter++;
 
-	if ( $header->status() eq 'On-line' ) {
+	if ( $header->status() eq 'online' ) {
 	    print "ok $TestCounter\n";
 	} else {
 	    warn("Volume header 'status' is '" .
-		 $header->status() . "', should be 'On-line'\n");
+		 $header->status() . "', should be 'online'\n");
 	    print "not ok $TestCounter\n";
 	    $errors++;
 	}
@@ -831,18 +833,12 @@ if ( $vos->supportsOperation('offline') ) {
 
 	my ($header) = $result->getVolumeHeaders();
 	
-	my %status =
-	  (
-	   offline		=> 'Off-line',
-	   online		=> 'On-line',
-	  );
-
-	if ( $header->status() eq $status{$method} ) {
+	if ( $header->status() eq $method ) {
 	    print "ok $TestCounter\n";
 	} else {
 	    print "not ok $TestCounter\n";
 	    warn("Volume '$volname' on server '$servers[0]', " .
-		 "partition '$partitions[0]', in cell '$cell' was not $status{$method}");
+		 "partition '$partitions[0]', in cell '$cell' was not $method");
 	}
 	$TestCounter++;
 	

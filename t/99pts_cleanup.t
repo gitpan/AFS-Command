@@ -1,5 +1,5 @@
 #
-# $Id: 99pts_cleanup.t,v 4.1 2003/10/28 21:10:00 wpm Exp $
+# $Id: 99pts_cleanup.t,v 5.3 2003/11/13 20:40:39 wpm Exp $
 #
 # (c) 2003 Morgan Stanley and Co.
 # See ..../src/LICENSE for terms of distribution.
@@ -25,6 +25,8 @@ BEGIN {
     $| = 1;
     if ( $AFS::Command::Tests::Config{AFS_COMMAND_DISABLE_TESTS} =~ /\bpts\b/ ) {
 	$TestTotal = 0;
+    } elsif ( $AFS::Command::Tests::Config{AFS_COMMAND_CELLNAME} eq 'your.cell.name' ) {
+	$TestTotal = 1;
     } else {
 	$TestTotal = 3;
     }
@@ -32,13 +34,13 @@ BEGIN {
 }
 
 END {print "not ok 1\n" unless $Loaded;}
-use AFS::Command::PTS 1.3;
+use AFS::Command::PTS 1.4;
 $Loaded = 1;
 $TestCounter = 1;
 print "ok $TestCounter\n";
 $TestCounter++;
 
-exit 0 unless $TestTotal;
+exit 0 unless $TestTotal > 1;
 
 my $cell = $AFS::Command::Tests::Config{AFS_COMMAND_CELLNAME} || do {
     print "not ok $TestCounter..$TestTotal\n";

@@ -1,5 +1,5 @@
 #
-# $Id: Base.pm,v 4.2 2003/11/05 22:42:27 wpm Exp $
+# $Id: Base.pm,v 5.1 2003/11/05 22:52:36 wpm Exp $
 #
 # (c) 2003 Morgan Stanley and Co.
 # See ..../src/LICENSE for terms of distribution.
@@ -18,7 +18,7 @@ use IO::File;
 use IO::Pipe;
 
 our $AUTOLOAD	= "";
-our $VERSION = '1.3';
+our $VERSION = '1.4';
 
 our %Carp =
   (

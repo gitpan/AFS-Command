@@ -1,5 +1,5 @@
 #
-# $Id: 02vos_volserver.t,v 4.1 2003/10/28 21:09:58 wpm Exp $
+# $Id: 02vos_volserver.t,v 5.3 2003/11/13 21:06:56 wpm Exp $
 #
 # (c) 2003 Morgan Stanley and Co.
 # See ..../src/LICENSE for terms of distribution.
@@ -26,6 +26,8 @@ BEGIN {
     $| = 1;
     if ( $AFS::Command::Tests::Config{AFS_COMMAND_DISABLE_TESTS} =~ /\bvos\b/ ) {
 	$TestTotal = 0;
+    } elsif ( $AFS::Command::Tests::Config{AFS_COMMAND_CELLNAME} eq 'your.cell.name' ) {
+	$TestTotal = 0;
     } else {
 	$TestTotal = 21;
     }
@@ -33,7 +35,7 @@ BEGIN {
 }
 
 END {print "not ok 1\n" unless $Loaded;}
-use AFS::Command::VOS 1.3;
+use AFS::Command::VOS 1.4;
 $Loaded = 1;
 $TestCounter = 1;
 print "ok $TestCounter\n";
@@ -340,7 +342,7 @@ foreach my $name ( sort @names ) {
 	next;
     }
 
-    if ( $volume_byname->status() eq 'On-line' && not ref $volume_online ) {
+    if ( $volume_byname->status() eq 'online' && not ref $volume_online ) {
 	$volume_online = $volume_byname;
     }
 

@@ -1,48 +1,64 @@
 #-*-cperl-*-
 #
-# $Id: Changes,v 4.3 2003/11/05 22:47:33 wpm Exp $
+# $Id: Changes,v 5.1 2003/11/13 20:52:20 wpm Exp $
 #
 # (c) 2003 Morgan Stanley and Co.
 # See ..../src/LICENSE for terms of distribution.
 #
 
-=head1 Changes in 1.3
+=head1 Changes in 1.4
 
 =head1 Enhancements
 
-=head2 AFS::Command::VOS->release support both -f and -force
+=head2 Test suite is disabled by default.
 
-Someone at some point changed vos release's force argument from -f to
--force.  API calls written with one of those will not work with a vos
-binary that doesn't agree on the choice of force option.  This would
-have require developers to write code like this:
+There is a well intentioned effort to automatically test all new
+submissions to CPAN (see http://testers.cpan.org).  Unfortunately, the
+AFS-Command package can't be tested automatically, since it requires a
+fair amount of configuration.  You have to specify a cell name, some
+fileserver names and partitions, etc.
 
-   $vos->release
-     (
-      id		=> $id,
-      cell		=> $cell,
-      ( $vos->supportsArgument('release','force') ?
-        ( force		=> 1 ) :
-        ( f		=> 1 )
-      ),
-     );
-
-OK, that's the authors twisted way of doing it, and it seems like
-needless complexity.  Both f and force are now supported as options,
-using a simply alias mechanism to translate from one to the other,
-based on what is supported by the vos binary.
-
-The documentation hasn't been changed, since you can use 'force' in
-all cases, and since that is the newer of the two, the docs will stay
-as they are.  The fact that your vos binary really wants 'f' is hidden
-from you, and will stay that way.
+By default, the tests will all be skipped if the configured cell name
+in the CONFIG file has not been modified, thus allowing the automated
+CPAN testing to continue, automatically, without the author getting a
+bunch of bogus emails.
 
 =head1 Bugs
 
-=head2 AFS::Command::BOS->listhosts
+=head2 Volume status value inconsistency
 
-The returned object has a cell attribute, as well as the hosts
-attribute, but the docs forgot to mention this.
+!!!!!!!! WARNING !!!!!!!!
+
+This change is NOT backwards compatible with previous releases, so
+verify that your code handles the new, consistent values correctly.
+
+The "status" field returned from either vos->examine() or
+vos->listvol(), in previous releases, had inconsistent values. When a
+volume is online, the status would be one of:
+
+    online
+    On-line
+
+Likewise, when offline, one of:
+
+    offline
+    Off-line
+
+These values have all been normalized to: online, offline
+
+=head2 AFS::Command::VOS->examine parses busy and offline messages
+
+When a volume is busy or can not be attached, "vos examine" will be
+unable to display the volume headers.  Instead, a one line message is
+printed, such as one of the following:
+
+    **** Volume 123456789 is busy ****
+    **** Could not attach volume 123456789 ****
+
+The examine method now parses these, and the AFS::Object::VolumeHeader
+object will have only the 'id' and 'status' attributes.  Previously,
+those lines were incorrectly parsed and the 'name' attribute set to
+'****', which is pretty obviously wrong.
 
 =cut
 

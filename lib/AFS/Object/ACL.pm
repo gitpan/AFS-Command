@@ -1,5 +1,5 @@
 #
-# $Id: ACL.pm,v 4.1 2003/10/28 21:09:53 wpm Exp $
+# $Id: ACL.pm,v 5.1 2003/11/05 22:52:38 wpm Exp $
 #
 # (c) 2003 Morgan Stanley and Co.
 # See ..../src/LICENSE for terms of distribution.
@@ -10,7 +10,7 @@ package AFS::Object::ACL;
 use strict;
 
 our @ISA = qw(AFS::Object);
-our $VERSION = '1.3';
+our $VERSION = '1.4';
 
 sub getPrincipals {
     my $self = shift;

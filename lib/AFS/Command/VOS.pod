@@ -1,5 +1,5 @@
 #
-# $Id: VOS.pod,v 3.1 2003/10/28 19:56:35 wpm Exp $
+# $Id: VOS.pod,v 5.1 2003/11/13 20:53:52 wpm Exp $
 #
 # (c) 2003 Morgan Stanley and Co.
 # See ..../src/LICENSE for terms of distribution.
@@ -473,10 +473,10 @@ The following attributes should always be present.
     Attributes			Values
     ----------			------
     id				Numeric Volume ID
-    status			"On-line" | "Off-line" | "busy" | ???
+    status			online | offline | busy
 
 The following attributes are present only if the volume's status is
-'On-line':
+'online':
 
     Attributes			Values
     ----------			------
@@ -1057,13 +1057,13 @@ The following attributes should always be present.
     Attributes			Values
     ----------			------
     id				Numeric Volume ID
-    status			"On-line" | "Off-line" | "busy" | ???
+    status			online | offline | busy
 
 If the 'fast' argument was specified, then none of the other
 attributes will be present.
 
 The following attributes are present only if the volume's status is
-'On-line':
+'online':
 
     Attributes			Values
     ----------			------

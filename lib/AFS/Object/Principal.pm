@@ -1,5 +1,5 @@
 #
-# $Id: Principal.pm,v 4.1 2003/10/28 21:09:55 wpm Exp $
+# $Id: Principal.pm,v 5.1 2003/11/05 22:52:40 wpm Exp $
 #
 # (c) 2003 Morgan Stanley and Co.
 # See ..../src/LICENSE for terms of distribution.
@@ -9,7 +9,7 @@ package AFS::Object::Principal;
 
 use strict;
 
-our $VERSION = '1.3';
+our $VERSION = '1.4';
 
 sub _addOwned {
     my $self = shift;

@@ -1,5 +1,5 @@
 #
-# $Id: 40fs_complex.t,v 4.1 2003/10/28 21:09:59 wpm Exp $
+# $Id: 40fs_complex.t,v 5.2 2003/11/13 20:30:53 wpm Exp $
 #
 # (c) 2003 Morgan Stanley and Co.
 # See ..../src/LICENSE for terms of distribution.
@@ -24,18 +24,24 @@ BEGIN {
 
 BEGIN {
     $| = 1;
-    $TestTotal = 44;
+    if ( $AFS::Command::Tests::Config{AFS_COMMAND_CELLNAME} eq 'your.cell.name' ) {
+	$TestTotal = 0;
+    } else {
+	$TestTotal = 44;	
+    }
     print "1..$TestTotal\n";
 }
 
 END {print "not ok 1\n" unless $Loaded;}
-use AFS::Command::PTS 1.3;
-use AFS::Command::FS 1.3;
-use AFS::Command::VOS 1.3;
+use AFS::Command::PTS 1.4;
+use AFS::Command::FS 1.4;
+use AFS::Command::VOS 1.4;
 $Loaded = 1;
 $TestCounter = 1;
 print "ok $TestCounter\n";
 $TestCounter++;
+
+exit 0 unless $TestTotal;
 
 my $cell = $AFS::Command::Tests::Config{AFS_COMMAND_CELLNAME} || do {
     print "not ok $TestCounter..$TestTotal\n";

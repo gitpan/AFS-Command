@@ -1,5 +1,5 @@
 #
-# $Id: BOS.pm,v 4.1 2003/10/28 21:09:51 wpm Exp $
+# $Id: BOS.pm,v 5.1 2003/11/05 22:52:36 wpm Exp $
 #
 # (c) 2003 Morgan Stanley and Co.
 # See ..../src/LICENSE for terms of distribution.
@@ -18,7 +18,7 @@ use AFS::Object::BosServer;
 use AFS::Object::Instance;
 
 our @ISA = qw(AFS::Command::Base);
-our $VERSION = '1.3';
+our $VERSION = '1.4';
 
 sub getdate {
 

@@ -1,5 +1,5 @@
 #
-# $Id: VOS.pm,v 4.1 2003/10/28 21:09:52 wpm Exp $
+# $Id: VOS.pm,v 5.2 2003/11/13 20:59:41 wpm Exp $
 #
 # (c) 2003 Morgan Stanley and Co.
 # See ..../src/LICENSE for terms of distribution.
@@ -23,7 +23,7 @@ use AFS::Object::Partition;
 use AFS::Object::Transaction;
 
 our @ISA = qw(AFS::Command::Base);
-our $VERSION = '1.3';
+our $VERSION = '1.4';
 
 sub examine {
 
@@ -48,13 +48,41 @@ sub examine {
 	chomp;
 
 	#
+	# These two lines are part of the verbose output
+	#
+	next if /Fetching VLDB entry/;
+	next if /Getting volume listing/;
+
+	#
 	# This code parses the volume header information.  If we match
 	# this line, then we go after the information we expect to be
 	# right after it.  We also test for this first, because we
 	# might very well have several of these chunks of data for RO
 	# volumes.
 	#
-	if ( /^$args{id}\s+(\d+)\s+(RW|RO|BK)\s+(\d+)\s+K/ ) {
+	if ( /^\*{4}/ ) {
+
+	    my $header = AFS::Object::VolumeHeader->new();
+
+	    if ( /Volume (\d+) is busy/ ) {
+		$header->_setAttribute
+		  (
+		   id			=> $1,
+		   status		=> 'busy',
+		  );
+	    } elsif ( /Could not attach volume (\d+)/ ) {
+		$header->_setAttribute
+		  (
+		   id			=> $1,
+		   status		=> 'offline',
+		  );
+	    }
+
+	    $result->_addVolumeHeader($header);
+
+	    next;
+
+	} elsif ( /^$args{id}\s+(\d+)\s+(RW|RO|BK)\s+(\d+)\s+K/ ) {
 
 	    my $header = AFS::Object::VolumeHeader->new();
 
@@ -66,11 +94,15 @@ sub examine {
 		   id 			=> $1,
 		   type 		=> $2,
 		   size 		=> $3,
-		   status 		=> $4,
 		  );
 		$header->_setAttribute( rwrite	=> $1 ) if $2 eq 'RW';
 		$header->_setAttribute( ronly	=> $1 ) if $2 eq 'RO';
 		$header->_setAttribute( backup	=> $1 ) if $2 eq 'BK';
+
+		my $status = $4;
+		$status = 'offline' if $status eq 'Off-line';
+		$status = 'online' if $status eq 'On-line';
+		$header->_setAttribute( status => $status );
 
 	    } elsif ( /^$args{id}\s+(\d+)\s+(RW|RO|BK)\s+(\d+)\s+K\s+used\s+(\d+)\s+files\s+([\w-]+)/ ) {
 
@@ -81,11 +113,15 @@ sub examine {
 		   type 		=> $2,
 		   size 		=> $3,
 		   files 		=> $4,
-		   status 		=> $5,
 		  );
 		$header->_setAttribute( rwrite	=> $1 ) if $2 eq 'RW';
 		$header->_setAttribute( ronly	=> $1 ) if $2 eq 'RO';
 		$header->_setAttribute( backup	=> $1 ) if $2 eq 'BK';
+
+		my $status = $5;
+		$status = 'offline' if $status eq 'Off-line';
+		$status = 'online' if $status eq 'On-line';
+		$header->_setAttribute( status => $status );
 
 	    } else {
 
@@ -686,6 +722,8 @@ sub listvol {
 
 	    if ( @array == 6 ) {
 		($name,$id,$type,$size,$status) = @array[0..3,5];
+		$status = 'offline' if $status eq 'Off-line';
+		$status = 'online' if $status eq 'On-line';
 		$volume->_setAttribute
 		  (
 		   id			=> $id,

@@ -1,5 +1,5 @@
 #
-# $Id: 20fs_basic.t,v 4.1 2003/10/28 21:09:59 wpm Exp $
+# $Id: 20fs_basic.t,v 5.2 2003/11/13 20:29:53 wpm Exp $
 #
 # (c) 2003 Morgan Stanley and Co.
 # See ..../src/LICENSE for terms of distribution.
@@ -25,6 +25,8 @@ BEGIN {
     $| = 1;
     if ( $AFS::Command::Tests::Config{AFS_COMMAND_DISABLE_TESTS} =~ /\bfs\b/ ) {
 	$TestTotal = 0;
+    } elsif ( $AFS::Command::Tests::Config{AFS_COMMAND_CELLNAME} eq 'your.cell.name' ) {
+	$TestTotal = 0;
     } else {
 	$TestTotal = 124;
     }
@@ -32,7 +34,7 @@ BEGIN {
 }
 
 END {print "not ok 1\n" unless $Loaded;}
-use AFS::Command::FS 1.3;
+use AFS::Command::FS 1.4;
 $Loaded = 1;
 $TestCounter = 1;
 print "ok $TestCounter\n";
