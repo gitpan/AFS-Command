@@ -1,5 +1,5 @@
 #
-# $Id: PTS.pm,v 3.1 2003/10/08 21:08:21 wpm Exp $
+# $Id: PTS.pm,v 4.1 2003/10/28 21:09:52 wpm Exp $
 #
 # (c) 2003 Morgan Stanley and Co.
 # See ..../src/LICENSE for terms of distribution.
@@ -20,7 +20,7 @@ use AFS::Object::Group;
 use AFS::Object::User;
 
 our @ISA = qw(AFS::Command::Base);
-our $VERSION = '1.2';
+our $VERSION = '1.3';
 
 sub creategroup {
 

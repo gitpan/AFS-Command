@@ -1,5 +1,5 @@
 #
-# $Id: Object.pm,v 3.1 2003/10/08 21:08:22 wpm Exp $
+# $Id: Object.pm,v 4.1 2003/10/28 21:09:52 wpm Exp $
 #
 # (c) 2003 Morgan Stanley and Co.
 # See ..../src/LICENSE for terms of distribution.
@@ -11,7 +11,7 @@ use strict;
 use Carp;
 
 our $AUTOLOAD = "";
-our $VERSION = '1.2';
+our $VERSION = '1.3';
 
 our %Carp =
   (

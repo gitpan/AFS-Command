@@ -1,5 +1,5 @@
 #
-# $Id: 00vos_basic.t,v 3.3 2003/10/28 20:55:19 wpm Exp $
+# $Id: 00vos_basic.t,v 4.2 2003/11/05 22:42:49 wpm Exp $
 #
 # (c) 2003 Morgan Stanley and Co.
 # See ..../src/LICENSE for terms of distribution.
@@ -27,13 +27,13 @@ BEGIN {
     if ( $AFS::Command::Tests::Config{AFS_COMMAND_DISABLE_TESTS} =~ /\bvos\b/ ) {
 	$TestTotal = 0;
     } else {
-	$TestTotal = 73;
+	$TestTotal = 75;
     }
     print "1..$TestTotal\n";
 }
 
 END {print "not ok 1\n" unless $Loaded;}
-use AFS::Command::VOS 1.2;
+use AFS::Command::VOS 1.3;
 $Loaded = 1;
 $TestCounter = 1;
 print "ok $TestCounter\n";
@@ -663,19 +663,27 @@ if ( ref $result && $result->isa("AFS::Object::VLDB") ) {
 	$vos->errors());
 }
 
-$result = $vos->release
-  (
-   id				=> $volname,
-   cell				=> $cell,
-  );
-if ( $result ) {
-    print "ok $TestCounter\n";
-} else {
-    print "not ok $TestCounter..$TestTotal\n";
-    die("Unable to release volume '$volname' in cell '$cell':\n" .
-	$vos->errors());
+foreach my $force ( qw( none f force ) ) {
+
+    $result = $vos->release
+      (
+       id				=> $volname,
+       cell				=> $cell,
+       (
+	$force eq 'none' ? () :
+	( $force		   	=> 1 )
+       ),
+      );
+    if ( $result ) {
+	print "ok $TestCounter\n";
+    } else {
+	print "not ok $TestCounter..$TestTotal\n";
+	die("Unable to release volume '$volname' in cell '$cell':\n" .
+	    $vos->errors());
+    }
+    $TestCounter++;
+
 }
-$TestCounter++;
 
 #
 # The volume is released, so now, let's examine the readonly, and make

@@ -1,14 +1,10 @@
 CONFIG
 COPYRIGHT
 Changes
-Changes.html
 LICENSE
-MANIFEST
 Makefile.PL
 README
-README.html
 ToDo
-ToDo.html
 lib/AFS/Command.pod
 lib/AFS/Command/BOS.pm
 lib/AFS/Command/BOS.pod

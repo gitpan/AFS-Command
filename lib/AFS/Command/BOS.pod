@@ -1,5 +1,5 @@
 #
-# $Id: BOS.pod,v 1.6 2003/09/02 20:33:09 wpm Exp $
+# $Id: BOS.pod,v 4.1 2003/10/29 20:26:42 wpm Exp $
 #
 # (c) 2003 Morgan Stanley and Co.
 # See ..../src/LICENSE for terms of distribution.
@@ -300,13 +300,14 @@ contains one attribute.
         print "\t$host\n";
     }
 
-The object has the following attribute:
+The object has the following attributes:
 
 B<AFS::Object::BosServer>
 
     Attributes			Values
     ----------			------
     hosts			ARRAY reference of hostnames
+    cell			Cell name
 
 =back
 

@@ -1,5 +1,5 @@
 #
-# $Id: Base.pm,v 3.2 2003/10/28 19:57:56 wpm Exp $
+# $Id: Base.pm,v 4.2 2003/11/05 22:42:27 wpm Exp $
 #
 # (c) 2003 Morgan Stanley and Co.
 # See ..../src/LICENSE for terms of distribution.
@@ -18,7 +18,7 @@ use IO::File;
 use IO::Pipe;
 
 our $AUTOLOAD	= "";
-our $VERSION = '1.2';
+our $VERSION = '1.3';
 
 our %Carp =
   (
@@ -196,6 +196,7 @@ sub _arguments {
       {
        optional		=> {},
        required		=> {},
+       aliases		=> {},
       };
 
     my $command = $self->{command};
@@ -271,6 +272,24 @@ sub _arguments {
 
 	}
 
+    }
+
+    #
+    # XXX -- Hack Alert!!!
+    #
+    # Because some asshole decided to change the force option to vos
+    # release from -f to -force, you can't use the API tranparently
+    # with 2 different vos binaries that support the 2 different options.
+    #
+    # If we need more of these, we can add them, as this let's us
+    # alias one argument to another.
+    #
+    if ( $self->isa("AFS::Command::VOS") && $operation eq 'release' ) {
+	if ( exists $arguments->{optional}->{f} ) {
+	    $arguments->{aliases}->{force} = 'f';
+	} elsif ( exists $arguments->{optional}->{force} ) {
+	    $arguments->{aliases}->{f} = 'force';
+	}
     }
 
     unless ( waitpid($pid,0) ) {
@@ -387,6 +406,11 @@ sub _parse_arguments {
     } else {
 
 	my @argv = ( $self->{command}, $self->{operation} );
+
+	foreach my $key ( keys %args ) {
+	    next unless $arguments->{aliases}->{$key};
+	    $args{$arguments->{aliases}->{$key}} = delete $args{$key};
+	}
 
 	foreach my $key ( qw( noauth localauth encrypt ) ) {
 	    next unless $self->{$key};

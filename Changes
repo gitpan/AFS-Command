@@ -1,22 +1,48 @@
 #-*-cperl-*-
 #
-# $Id: Changes,v 3.1 2003/10/28 21:02:35 wpm Exp $
+# $Id: Changes,v 4.3 2003/11/05 22:47:33 wpm Exp $
 #
 # (c) 2003 Morgan Stanley and Co.
 # See ..../src/LICENSE for terms of distribution.
 #
 
-=head1 Changes in 1.2
+=head1 Changes in 1.3
 
 =head1 Enhancements
 
-=head2 AFS::Command::VOS->offline() and ->online()
+=head2 AFS::Command::VOS->release support both -f and -force
 
-Both of these "hidden" vos commands are now supported by the API.
-These commands are part of the vos command suite, but they do not show
-up in the output of "vos help".
+Someone at some point changed vos release's force argument from -f to
+-force.  API calls written with one of those will not work with a vos
+binary that doesn't agree on the choice of force option.  This would
+have require developers to write code like this:
+
+   $vos->release
+     (
+      id		=> $id,
+      cell		=> $cell,
+      ( $vos->supportsArgument('release','force') ?
+        ( force		=> 1 ) :
+        ( f		=> 1 )
+      ),
+     );
+
+OK, that's the authors twisted way of doing it, and it seems like
+needless complexity.  Both f and force are now supported as options,
+using a simply alias mechanism to translate from one to the other,
+based on what is supported by the vos binary.
+
+The documentation hasn't been changed, since you can use 'force' in
+all cases, and since that is the newer of the two, the docs will stay
+as they are.  The fact that your vos binary really wants 'f' is hidden
+from you, and will stay that way.
 
 =head1 Bugs
+
+=head2 AFS::Command::BOS->listhosts
+
+The returned object has a cell attribute, as well as the hosts
+attribute, but the docs forgot to mention this.
 
 =cut
 

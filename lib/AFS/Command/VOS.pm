@@ -1,5 +1,5 @@
 #
-# $Id: VOS.pm,v 3.2 2003/10/08 21:58:22 wpm Exp $
+# $Id: VOS.pm,v 4.1 2003/10/28 21:09:52 wpm Exp $
 #
 # (c) 2003 Morgan Stanley and Co.
 # See ..../src/LICENSE for terms of distribution.
@@ -23,7 +23,7 @@ use AFS::Object::Partition;
 use AFS::Object::Transaction;
 
 our @ISA = qw(AFS::Command::Base);
-our $VERSION = '1.2';
+our $VERSION = '1.3';
 
 sub examine {
 

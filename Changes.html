@@ -1,6 +1,6 @@
     <HTML> 
 	<HEAD> 
-	    <TITLE>1.2/src/Changes</TITLE> 
+	    <TITLE>1.3/src/Changes</TITLE> 
 	</HEAD>
 
 	<BODY>
@@ -9,20 +9,25 @@
 
 <UL>
 
-	<LI><A HREF="#Changes_in_1_2">Changes in 1.2</A>
+	<LI><A HREF="#Changes_in_1_3">Changes in 1.3</A>
 	<LI><A HREF="#Enhancements">Enhancements</A>
 	<UL>
 
-		<LI><A HREF="#AFS_Command_VOS_offline_and">AFS::Command::VOS->offline() and ->online()</A>
+		<LI><A HREF="#AFS_Command_VOS_release_suppo">AFS::Command::VOS->release support both -f and -force</A>
 	</UL>
 
 	<LI><A HREF="#Bugs">Bugs</A>
+	<UL>
+
+		<LI><A HREF="#AFS_Command_BOS_listhosts">AFS::Command::BOS->listhosts</A>
+	</UL>
+
 </UL>
 <!-- INDEX END -->
 
 <HR>
 <P>
-<H1><A NAME="Changes_in_1_2">Changes in 1.2
+<H1><A NAME="Changes_in_1_3">Changes in 1.3
 
 </A></H1>
 <P>
@@ -32,12 +37,42 @@
 </A></H1>
 <P>
 <HR>
-<H2><A NAME="AFS_Command_VOS_offline_and">AFS::Command::VOS->offline() and ->online()
+<H2><A NAME="AFS_Command_VOS_release_suppo">AFS::Command::VOS->release support both -f and -force
 
 </A></H2>
-Both of these ``hidden'' vos commands are now supported by the API. These
-commands are part of the vos command suite, but they do not show up in the
-output of ``vos help''.
+Someone at some point changed vos release's force argument from -f to
+-force. API calls written with one of those will not work with a vos binary
+that doesn't agree on the choice of force option. This would have require
+developers to write code like this:
+
+
+<P>
+
+<PRE>   $vos-&gt;release
+     (
+      id                =&gt; $id,
+      cell              =&gt; $cell,
+      ( $vos-&gt;supportsArgument('release','force') ?
+        ( force         =&gt; 1 ) :
+        ( f             =&gt; 1 )
+      ),
+     );
+</PRE>
+
+<P>
+
+OK, that's the authors twisted way of doing it, and it seems like needless
+complexity. Both f and force are now supported as options, using a simply
+alias mechanism to translate from one to the other, based on what is
+supported by the vos binary.
+
+
+<P>
+
+The documentation hasn't been changed, since you can use 'force' in all
+cases, and since that is the newer of the two, the docs will stay as they
+are. The fact that your vos binary really wants 'f' is hidden from you, and
+will stay that way.
 
 
 <P>
@@ -47,6 +82,17 @@ output of ``vos help''.
 <H1><A NAME="Bugs">Bugs
 
 </A></H1>
+<P>
+<HR>
+<H2><A NAME="AFS_Command_BOS_listhosts">AFS::Command::BOS->listhosts
+
+</A></H2>
+The returned object has a cell attribute, as well as the hosts attribute,
+but the docs forgot to mention this.
+
+
+<P>
+
 </DL>
     </BODY>
 

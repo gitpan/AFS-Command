@@ -1,5 +1,5 @@
 #
-# $Id: Partition.pm,v 3.1 2003/10/08 21:08:24 wpm Exp $
+# $Id: Partition.pm,v 4.1 2003/10/28 21:09:55 wpm Exp $
 #
 # (c) 2003 Morgan Stanley and Co.
 # See ..../src/LICENSE for terms of distribution.
@@ -10,7 +10,7 @@ package AFS::Object::Partition;
 use strict;
 
 our @ISA = qw(AFS::Object);
-our $VERSION = '1.2';
+our $VERSION = '1.3';
 
 sub getVolumeIds {
     my $self = shift;

@@ -1,5 +1,5 @@
 #
-# $Id: 30pts_basic.t,v 3.1 2003/10/08 21:08:28 wpm Exp $
+# $Id: 30pts_basic.t,v 4.1 2003/10/28 21:09:59 wpm Exp $
 #
 # (c) 2003 Morgan Stanley and Co.
 # See ..../src/LICENSE for terms of distribution.
@@ -32,7 +32,7 @@ BEGIN {
 }
 
 END {print "not ok 1\n" unless $Loaded;}
-use AFS::Command::PTS 1.2;
+use AFS::Command::PTS 1.3;
 $Loaded = 1;
 $TestCounter = 1;
 print "ok $TestCounter\n";
