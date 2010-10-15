@@ -10,7 +10,7 @@ package AFS::Object::Instance;
 use strict;
 
 our @ISA = qw(AFS::Object);
-our $VERSION = '1.13';
+our $VERSION = '1.99';
 
 sub getCommandIndexes {
     my $self = shift;

@@ -10,7 +10,7 @@ package AFS::Object::VLDB;
 use strict;
 
 our @ISA = qw(AFS::Object);
-our $VERSION = '1.13';
+our $VERSION = '1.99';
 
 sub getVolumeNames {
     my $self = shift;

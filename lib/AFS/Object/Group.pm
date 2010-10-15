@@ -11,6 +11,6 @@ use strict;
 
 our @ISA = qw(AFS::Object::Principal
 	      AFS::Object);
-our $VERSION = '1.13';
+our $VERSION = '1.99';
 
 1;
